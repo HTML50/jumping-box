@@ -125,6 +125,8 @@ function keyDown(){
 if(!isStart&&!isWin){
 	start()
 	isStart=true;
+	backgroundAudio.play()
+	backgroundAudio.volume="0.3"
 	}
 	else if(!isStart&&isWin){
 	reset();
@@ -133,7 +135,7 @@ if(!isStart&&!isWin){
 	if(moveProcess!=null) clearInterval(moveProcess)
 	jump();
 	}
-	else{}
+
 }
 
 function touch (event){
@@ -166,9 +168,6 @@ addEventListener('touchstart',touch,false);
 addEventListener('touchmove',touch,false);
 addEventListener('touchend',touch,false);
 
-
-backgroundAudio.play()
-backgroundAudio.volume="0.3"
 }
 
 
