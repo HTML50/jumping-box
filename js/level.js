@@ -9,9 +9,12 @@ var objWidth=26
 function createObstacles(level){
 	ctxBg.clearRect(0,0,canvas.width,canvas.height); 
 	for(i=0;i<levelMap[level].length;i++){
-		if(levelMap[level][i]!=0){
+		if(levelMap[level][i]<100){
 			drawObstacle(i,levelMap[level][i])
 		}
+		else if(levelMap[level][i]=='f'){
+			drawFloat(i)
+			}
 	}
 
 }
@@ -30,4 +33,17 @@ function drawObstacle(position,height){
 	},5)
 }
 
-
+//浮动横条高度为20
+function drawFloat(position){
+	var objHeight=0
+	var thisProcess=setInterval(function(){
+		if(objHeight<20){
+			ctxBg.fillRect(objWidth*position,canvas.height-objHeight-playerRadius*2-1,objWidth,objHeight);
+			objHeight+=1
+			
+		}
+		else{
+			clearInterval(thisProcess)
+		}
+	},5)
+}

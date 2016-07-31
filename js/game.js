@@ -77,5 +77,6 @@ function fallDownProcess(){
 	isJumping = false;
 	s=0
 	v0=vt
+	playerY=playerRadius
 	}
 }

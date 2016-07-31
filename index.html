@@ -5,15 +5,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
 <style>
-body {margin:0;padding:0}
+*{margin:0;padding:0}
 canvas {
 border-bottom:10px solid #9b59b6;
 }
-
+div {
+width:650px;height:350px;margin:auto;
+}
 </style>
 </head>
 <body>
-<div style="width:650px;height:350px;margin:0 auto;">
+<div>
 <canvas id="player" width="650" height="350" style="position:absolute;z-index:421;"></canvas>
 <canvas id="background" width="650" height="350" style="position:absolute;z-index:331;"></canvas>
 <canvas id="canvas" width="650" height="350" style="position:absolute;z-index:421;"></canvas>
@@ -23,6 +25,7 @@ border-bottom:10px solid #9b59b6;
 <canvas id="canvas4" width="650" height="350" style="position:absolute;z-index:421;"></canvas>
 <canvas id="canvas5" width="650" height="350" style="position:absolute;z-index:421;"></canvas>
 </div>
+<center><br><a href="//weibo.com/sooob" target="new">@2byte</a>
 
 
 <audio loop="loop" id="Background-AudioPlayer" preload="auto">
@@ -94,46 +97,49 @@ var isWin=false;
 
 var level=0;
 var levelMap=[
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 30, 0, 30, 0, 0, 0, 30, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-
-	[0, 0, 5, 5, 5, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 2, 0, 0, 0, 5, 0, 0, 0, 0, 2, 0, 0, 0, 5, 0, 0, 0, 3, 0, 0, 0],
-	[0, 0, 0, 0, 2, 3, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 2, 3, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0],
-
-	[0, 0, 5, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 2, 0, 0, 0],
-	[0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 5, 0, 0, 0, 2, 2, 2, 0, 0, 5, 0, 0, 0],
-	[0, 0, 0, 0, 2, 3, 2, 0, 0, 0, 5, 5, 0, 0, 0, 2, 3, 2, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 3, 0, 0, 0, 5, 0, 0, 0, 0, 2, 0, 0, 0],
-	[0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0],
-
-	[0, 0, 0, 0, 4, 0, 0, 0, 0, 5, 0, 0, 0, 3, 3, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 5, 0, 0, 2, 2, 0, 0, 0, 0, 5, 5, 0, 0, 0, 4, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0],
-	[0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 2, 0, 0, 0, 0, 0]];
+	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 10, 20, 30, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 70, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0],
+	
+	
+	[0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 50, 30, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 40, 20, 30, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 60, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 99, 30, 0, 0, 0, 0, 99, 10, 0, 0, 0, 0, 0, 0, 99, 20, 0, 0],
+	[0, 0, 0, 0, 0, 20, 0, 0, 0, 50, 0, 0, 0, 30, 30, 30, 0, 0, 0, 0, 0, 70, 0, 0, 0],
+	
+	[0, 0, 0, 0, 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 0, 0, 60, 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0, 0, 0, 0, 'f', 'f', 'f', 0, 0, 50, 50, 0, 0, 'f', 'f', 'f', 0, 0, 0, 0, 0, 0],
+	[0, 0, 0, 0,  50, 0,0, 0,'f',0, 0, 0, 0, 0,50, 0, 0, 'f', 'f', 'f', 'f', 0, 0, 0, 0]
+	,
+	[0, 0, 'f', 'f', 'f', 'f', 'f', 0, 0, 50, 60, 0, 0, 'f', 'f', 0, 0, 0, 99, 0, 0, 0, 0, 0, 99, 0],
+	[0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 99, 30, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 99, 0],
+	[0, 0, 'f', 'f', 'f', 'f', 'f', 0, 0, 50, 50, 0, 0, 'f', 'f', 0, 0, 0, 99, 0, 0, 0, 0, 0, 99, 0]
+	];
 
 //////////////////初始变量///////////////
 
 
-function keyDown(){
+function keyDown(e){
 if(!isStart&&!isWin){
 	start()
 	isStart=true;
+	backgroundAudio.play()
+	backgroundAudio.volume="0.3"
 	}
-	else if(!isStart&&isWin){
-	reset();
+	else if(!isStart&&isWin&&e.keyCode==13){
+	death=0
+	level=0;
+	start()
+	isStart=true;
 	}
-	else if(!isJumping){
+	else if(isStart&&!isJumping){
 	if(moveProcess!=null) clearInterval(moveProcess)
 	jump();
 	}
-	else{}
+
 }
 
 function touch (event){
@@ -156,19 +162,15 @@ function touch (event){
 //入口
 function main(){
 ctx.clearRect(0,0,650,200); 
-ctx.fillText("Press ANY KEY to jump", canvas.width/4, 150);
-
+ctx.fillText("jumping-box", canvas.width/3, 150);
+ctx.fillText("Press ANY key to jump", canvas.width/5, 200);
 
 addEventListener("keydown", function(e) {
-	keyDown()
+	keyDown(e)
 }, false);
 addEventListener('touchstart',touch,false);
 addEventListener('touchmove',touch,false);
 addEventListener('touchend',touch,false);
-
-
-backgroundAudio.play()
-backgroundAudio.volume="0.3"
 }
 
 
