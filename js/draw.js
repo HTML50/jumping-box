@@ -41,6 +41,34 @@ function clearPlayer(){
 function drawInfo(){
 ctx.clearRect(0,0,650,100); 
 ctx.fillText(death, 100, 60);
-ctx.fillText(level+"/"+levelMap.length, 500, 60);
+
+
+if(death>50 && death<=100){
+ctx.font = "20px Consolas";
+ctx.fillText("有些窄的地方需按住键不松连跳通过", 150, 60);
+ctx.font = "30px Consolas";
+}
+else if(death>100&& death<=150){
+ctx.font = "20px Consolas";
+ctx.fillText("一个键不好用，可以尝试多个按键", 170, 60);
+ctx.font = "30px Consolas";
+}
+else if(death>150&& death<=300){
+ctx.font = "20px Consolas";
+ctx.fillText("很多不好跳的地方，只能凭感觉", 170, 60);
+ctx.font = "30px Consolas";
+}
+else if(death>300&& death<=500){
+ctx.font = "20px Consolas";
+ctx.fillText("烈士暮年，壮心不已", 230, 60);
+ctx.font = "30px Consolas";
+}
+else if(death>500){
+ctx.font = "20px Consolas";
+ctx.fillText("大哥你这么认真，是我该请你吃饭了", 170, 60);
+ctx.font = "30px Consolas";
+}
+
+ctx.fillText(level+"/"+(levelMap.length-1), 500, 60);
 	
 }
