@@ -13,6 +13,9 @@ border-bottom:10px solid #9b59b6;
 div {
 width:650px;height:350px;margin:auto;
 }
+a{
+font-family:Consolas
+}
 </style>
 </head>
 <body>
@@ -172,9 +175,11 @@ addEventListener("keydown", function(e) {
 addEventListener('touchstart',touch,false);
 addEventListener('touchmove',touch,false);
 addEventListener('touchend',touch,false);
+
+    if ( window.orientation == 180 || window.orientation==0 ) {
+        alert("游戏开始前请设置手机横屏");
+    }
 }
-
-
 </script>
 <script src="js/scene.js"></script>
 <script src="js/game.js"></script>
