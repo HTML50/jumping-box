@@ -16,9 +16,7 @@ border-bottom:10px solid #9b59b6;
 div {
 width:650px;height:350px;margin:auto;
 }
-a{
-font-family:Consolas
-}
+
 </style>
 </head>
 <body>
@@ -47,139 +45,126 @@ font-family:Consolas
 	</audio>
 <script>
 
+////////////////////////初始化画布////////////////////////
+let backgroundAudio = document.getElementById("Background-AudioPlayer"),
+    jumpAudio = document.getElementById("Jump-AudioPlayer"),
+    gameoverAudio = document.getElementById("GameOver-AudioPlayer"),
+    canvas = document.getElementById("player"),
+    ctx=canvas.getContext("2d");
 
-var backgroundAudio = document.getElementById("Background-AudioPlayer");
-var jumpAudio = document.getElementById("Jump-AudioPlayer");
-var gameoverAudio = document.getElementById("GameOver-AudioPlayer");
-var canvas = document.getElementById("player");
-var ctx=canvas.getContext("2d");
-ctx.fillStyle="#2196f3";
-ctx.font = "20px Consolas";
-
-//初始化
-ctx.fillText("jumping-box", 245, 150);
-ctx.font = "30px Consolas";
-ctx.fillText("Loading", 250, 180);
-window.onload=function(e){
-main();
-}
+    ctx.fillStyle="#2196f3";
+    ctx.font = "20px Consolas";
+    ctx.fillText("jumping-box", 245, 150);
+    ctx.font = "30px Consolas";
+    ctx.fillText("Loading", 250, 180);
 
 
 
-var playerRadius=15;
-var death=0;
-
-//X,Y是方块的中心点,初始时是在半空中，准备下落
-var playerX;
-var playerY;
-
-var playSpeed=1000/60;
-var playerMoveSpeed=4;
-
-var jumpProcess;
-var moveProcess;
-
-
-////////////////////////跳跃过程//////////////////
-
-
-var vt=1000
-//起跳速度
-var v0=0
-var g=4000
-var s=0
-var t=playSpeed/1000;
-var angle=0;
-var spin=12
-
-var vFall=0;
-var sFall=0
-
-var isJumping = false;
-var isStart=false;
-var isWin=false;
-
-var level=0;
-var levelMap=[
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 10, 20, 30, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 70, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0],
-	
-	
-	[0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 50, 30, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 40, 20, 30, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 60, 0, 0],
-	[0, 0, 0, 0, 0, 0, 0, 99, 30, 0, 0, 0, 0, 99, 10, 0, 0, 0, 0, 0, 0, 99, 20, 0, 0],
-	[0, 0, 0, 0, 0, 20, 0, 0, 0, 50, 0, 0, 0, 30, 30, 30, 0, 0, 0, 0, 0, 70, 0, 0, 0],
-	
-	[0, 0, 0, 0, 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 0, 0, 60, 0, 0, 0, 0, 2, 0],
-	[0, 0, 0, 0, 'f', 'f', 'f', 'f', 'f', 'f', 0, 0, 50, 50, 0, 0, 'f', 'f', 'f', 'f', 'f', 'f', 0, 0, 2],
-	[0, 0, 0, 0,  70, 0,0, 0,'f',0, 0, 0, 0, 0,65, 0, 0, 'f', 'f', 'f', 'f', 0, 0, 0, 0]
-	,
-	[0, 0, 'f', 'f', 'f', 'f', 'f', 0, 0, 50, 60, 0, 0, 'f', 'f', 0, 0, 0, 99, 0, 0, 0, 0, 0, 99, 0],
-	[0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 99, 30, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 99, 0],
-	[0, 0, 'f', 'f', 'f', 'f', 'f', 0, 0, 50, 50, 0, 0, 'f', 'f', 0, 0, 0, 99, 0, 0, 0, 0, 99, 0, 0]
+////////////////////////变量初始化////////////////////////
+let playerRadius=15,
+    death=0,
+    playerX,playerY,  //X,Y是方块的中心点,初始时是在半空中，准备下落
+    playSpeed=1000/60,
+    playerMoveSpeed=4,
+    jumpProcess,moveProcess,
+    vt=1000,  //起跳速度
+    v0=0,
+    g=4000,
+    s=0,
+    t=playSpeed/1000,
+    angle=0,
+    spin=12,
+    vFall=0,
+    sFall=0,
+    isJumping = false,
+    isStart=false,
+    isWin=false;
+    level=0,
+    levelMap=[
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 10, 20, 30, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 70, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0],
+      
+      [0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 50, 30, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 40, 20, 30, 0, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 60, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 99, 30, 0, 0, 0, 0, 99, 10, 0, 0, 0, 0, 0, 0, 99, 20, 0, 0],
+      [0, 0, 0, 0, 0, 20, 0, 0, 0, 50, 0, 0, 0, 30, 30, 30, 0, 0, 0, 0, 0, 70, 0, 0, 0],
+      
+      [0, 0, 0, 0, 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 'f', 0, 0, 60, 0, 0, 0, 0, 2, 0],
+      [0, 0, 0, 0, 'f', 'f', 'f', 'f', 'f', 'f', 0, 0, 50, 50, 0, 0, 'f', 'f', 'f', 'f', 'f', 'f', 0, 0, 2],
+      [0, 0, 0, 0,  70, 0,0, 0,'f',0, 0, 0, 0, 0,65, 0, 0, 'f', 'f', 'f', 'f', 0, 0, 0, 0],
+      [0, 0, 'f', 'f', 'f', 'f', 'f', 0, 0, 50, 60, 0, 0, 'f', 'f', 0, 0, 0, 99, 0, 0, 0, 0, 0, 99, 0],
+      [0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 99, 30, 0, 0, 0, 0, 0, 99, 0, 0, 0, 0, 0, 99, 0],
+      
+      [0, 0, 'f', 'f', 'f', 'f', 'f', 0, 0, 50, 50, 0, 0, 'f', 'f', 0, 0, 0, 99, 0, 0, 0, 0, 99, 0, 0]
 	];
 
-//////////////////初始变量///////////////
 
+
+////////////////////////按键绑定////////////////////////
 
 function keyDown(e){
-if(!isStart&&!isWin){
-	start()
-	isStart=true;
-	backgroundAudio.play()
-	backgroundAudio.volume="0.3"
-	}
-	else if(!isStart&&isWin&&e.keyCode==13){
-	death=0
-	level=0;
-	start()
-	isStart=true;
-	}
-	else if(isStart&&!isJumping){
-	if(moveProcess!=null) clearInterval(moveProcess)
-	jump();
-	}
-
+  if(!isStart&&!isWin){
+      start();
+      isStart=true;
+      backgroundAudio.play();
+      backgroundAudio.volume="0.3";
+    }
+    else if(!isStart&&isWin&&e.keyCode==13){
+      death=0;
+      level=0;
+      start()
+      isStart=true;
+    }
+    else if(isStart&&!isJumping){
+      if(moveProcess!=null) clearInterval(moveProcess);
+      jump();
+    }
 }
 
 function touch (event){
-        var event = event || window.event;
-        switch(event.type){
-            case "touchstart":
-				keyDown()
-                break;
-            case "touchmove":
-                event.preventDefault();
-                keyDown()
-                break;
-        }
-         
-    }
+  var event = event || window.event;
+  switch(event.type){
+    case "touchstart":
+      keyDown()
+      break;
+    case "touchmove":
+    event.preventDefault();
+    keyDown()
+    break;
+  }
+}
 
 
 
-
-//入口
+////////////////////////入口////////////////////////
 function main(){
+  
+if ( window.orientation == 180 || window.orientation==0 ) {
+    alert("游戏开始前请设置手机横屏");
+}
+
+
 ctx.clearRect(0,0,650,200); 
 ctx.fillText("jumping-box", canvas.width/3, 150);
 ctx.fillText("Press ANY key to jump", canvas.width/5, 200);
 
-addEventListener("keydown", function(e) {
+addEventListener("keypress", function(e) {
 	keyDown(e)
 }, false);
+
 addEventListener('touchstart',touch,false);
 addEventListener('touchmove',touch,false);
-addEventListener('touchend',touch,false);
-
-    if ( window.orientation == 180 || window.orientation==0 ) {
-        alert("游戏开始前请设置手机横屏");
-    }
 }
+
+
+window.onload=function(){
+main();
+}
+
 </script>
 <script src="js/scene.js"></script>
 <script src="js/game.js"></script>
